@@ -34,6 +34,7 @@ $this->params['breadcrumbs'][] = $this->title;
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <?= Html::a('Create Users', ['create'], ['class' => 'btn btn-default']) ?>
+                                        <?php echo $this->render('_search', ['model' => $searchModel]); ?>
                                     </div>
                                 </div>
                             </div>

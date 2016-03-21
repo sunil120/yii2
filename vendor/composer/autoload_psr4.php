@@ -40,4 +40,5 @@ return array(
     'kartik\\affix\\' => array($vendorDir . '/kartik-v/yii2-widget-affix'),
     'cebe\\markdown\\' => array($vendorDir . '/cebe/markdown'),
     'Faker\\' => array($vendorDir . '/fzaninotto/faker/src/Faker'),
+    "Firebase\\JWT\\"=> array($vendorDir . '/firebase/php-jwt/src'),
 );

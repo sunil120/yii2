@@ -37,9 +37,6 @@ use yii\helpers\ArrayHelper;
     <div class="form-group">
         <?= $form->field($model, 'status')->dropDownList(array('1'=>'Active', '0'=>'Inactive'),['prompt'=>'Status','class'=>'form-control']); ?>
     </div>
-    <div class="form-group">
-        <?= $form->field($model, 'imageFile')->fileInput() ?>
-    </div>
     <div class="box-footer">
         <?= Html::submitButton($model->isNewRecord ? 'Create' : 'Update', ['class' => 'btn btn-primary']) ?>
         <?= Html::a('Cancel', ['/'.Yii::$app->controller->id], ['class' => 'btn btn-default']) ?>

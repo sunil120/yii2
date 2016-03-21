@@ -4,46 +4,22 @@ use yii\helpers\Html;
 use yii\widgets\ActiveForm;
 
 /* @var $this yii\web\View */
-/* @var $model common\models\UserSearch */
+/* @var $model common\models\BranchesSearch */
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="user-search">
+<div id="example1_filter" class="branches-search dataTables_filter  pull-right">
 
+    <?php $filter_field =  array_flip(array_diff(array_flip($model->attributeLabels()), array('auth_key' ,'password_hash','password_reset_token','access_token','image','updated_at'))); ?>
     <?php $form = ActiveForm::begin([
         'action' => ['index'],
         'method' => 'get',
     ]); ?>
-
-    <?= $form->field($model, 'id') ?>
-
-    <?= $form->field($model, 'first_name') ?>
-
-    <?= $form->field($model, 'last_name') ?>
-
-    <?= $form->field($model, 'username') ?>
-
-    <?= $form->field($model, 'auth_key') ?>
-
-    <?php // echo $form->field($model, 'password_hash') ?>
-
-    <?php // echo $form->field($model, 'password_reset_token') ?>
-
-    <?php // echo $form->field($model, 'email') ?>
-
-    <?php // echo $form->field($model, 'user_type_id') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <?php // echo $form->field($model, 'created_at') ?>
-
-    <?php // echo $form->field($model, 'updated_at') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton('Reset', ['class' => 'btn btn-default']) ?>
-    </div>
-
+    <?=$form->field($model, 'search') ?>
+    <?=$form->field($model, 'field')->dropDownList($filter_field,['prompt'=>'All']); ?>
+    <?=Html::submitButton('Search', ['class' => 'btn btn-default']) ?>
     <?php ActiveForm::end(); ?>
 
 </div>
+
+

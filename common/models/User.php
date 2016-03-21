@@ -6,6 +6,7 @@ use yii\base\NotSupportedException;
 use yii\behaviors\TimestampBehavior;
 use yii\db\ActiveRecord;
 use yii\web\IdentityInterface;
+use yii\web\UploadedFile;
 
 /**
  * User model
@@ -15,6 +16,7 @@ use yii\web\IdentityInterface;
  * @property string $password_hash
  * @property string $password_reset_token
  * @property string $email
+ * @property string $image
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
@@ -25,7 +27,6 @@ class User extends ActiveRecord implements IdentityInterface
 {
     const STATUS_DELETED = 0;
     const STATUS_ACTIVE = 1;
-    public $imageFile;
 
     /**
      * @inheritdoc
@@ -44,22 +45,34 @@ class User extends ActiveRecord implements IdentityInterface
             TimestampBehavior::className(),
         ];
     }
-
+    
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['first_name', 'last_name', 'username', 'password_hash','email','status', 'user_type_id'], 'required','on' => 'create'],
+            [['first_name', 'last_name', 'username', 'password_hash','email','status', 'user_type_id'], 'required'],
             [['user_type_id', 'status'], 'integer'],
             [['first_name', 'last_name'], 'string', 'max' => 100],
             [['username', 'email'], 'string', 'max' => 255],
-            [['password_hash'], 'string', 'max' => 255 ,'min'=>5 , 'on'=>'create'],
-            [['username'], 'unique'],
-            [['email'], 'unique'],
-            [['imageFile'], 'file', 'skipOnEmpty' => false, 'extensions' => 'png, jpg'],
+            [['password_hash'], 'string', 'max' => 255 ,'min'=>5],
+            [['username'], 'unique', 'on'=>'create'],
+            [['email'], 'unique', 'on'=>'create'],
+            [['image'], 'file', 'skipOnEmpty' => true, 'extensions' => 'png, jpg', 'maxFiles' => 4],
+            [['password_hash' ,'username'], 'safe'],
         ];
+    }
+    
+    
+    // filter out some fields, best used when you want to inherit the parent implementation
+    // and blacklist some sensitive fields.
+    public function fields()
+    {
+        $fields = parent::fields();
+        // remove fields that contain sensitive information
+        unset($fields['auth_key'], $fields['password_hash'], $fields['password_reset_token'], $fields['access_token']);
+        return $fields;
     }
     
     /**
@@ -77,6 +90,7 @@ class User extends ActiveRecord implements IdentityInterface
             'password_reset_token' => 'Password Reset Token',
             'email' => 'Email',
             'user_type_id' => 'User Type',
+            'image' => 'Image',
             'status' => 'Status',
             'created_at' => 'Created At',
             'updated_at' => 'Updated At',
@@ -97,7 +111,8 @@ class User extends ActiveRecord implements IdentityInterface
      */
     public static function findIdentityByAccessToken($token, $type = null)
     {
-        throw new NotSupportedException('"findIdentityByAccessToken" is not implemented.');
+        return static::findOne(['access_token' => $token]);
+
     }
 
     /**
@@ -161,6 +176,14 @@ class User extends ActiveRecord implements IdentityInterface
     {
         return $this->auth_key;
     }
+    
+    /**
+     * @inheritdoc
+     */
+    public function getAccessToken()
+    {
+        return $this->access_token;
+    }
 
     /**
      * @inheritdoc
@@ -190,6 +213,28 @@ class User extends ActiveRecord implements IdentityInterface
     {   
         $this->password_hash = $password?Yii::$app->security->generatePasswordHash($password):'';
     }
+    
+    
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function setImage($image)
+    {   
+        $this->image = $image?$image:'';
+    }
+    
+    /**
+     * Generates password hash from password and sets it to the model
+     *
+     * @param string $password
+     */
+    public function getImage()
+    {   
+        return $this->image;
+    }
+
 
     /**
      * Generates "remember me" authentication key
@@ -221,5 +266,18 @@ class User extends ActiveRecord implements IdentityInterface
     public function getUsertype()
     {
         return $this->hasOne(UserType::className(), ['id' => 'user_type_id']);
+    }
+    
+    
+    public function beforeSave($insert)
+    {
+        if (parent::beforeSave($insert)) {
+            if ($this->isNewRecord) {
+                $this->auth_key = Yii::$app->getSecurity()->generateRandomString();
+                $this->password_hash = $this->password_hash?Yii::$app->security->generatePasswordHash($this->password_hash):'';
+            }
+            return true;
+        }
+        return false;
     }
 }

@@ -5,7 +5,7 @@ $params = array_merge(
     require(__DIR__ . '/params.php'),
     require(__DIR__ . '/params-local.php')
 );
-
+require_once(dirname(dirname(dirname(__FILE__))). '/common/components/helpers.php');
 return [
     'id' => 'app-backend',
     'basePath' => dirname(__DIR__),

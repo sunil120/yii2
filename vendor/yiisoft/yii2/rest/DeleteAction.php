@@ -34,7 +34,10 @@ class DeleteAction extends Action
         if ($model->delete() === false) {
             throw new ServerErrorHttpException('Failed to delete the object for unknown reason.');
         }
-
-        Yii::$app->getResponse()->setStatusCode(204);
+        return array(
+            'status'=>1,
+            'message'=>'Records deleted successfully.',
+            'data'=>array_filter($model->attributes)
+        );
     }
 }

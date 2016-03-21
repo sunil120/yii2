@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: Jan 07, 2016 at 11:57 AM
+-- Generation Time: Mar 21, 2016 at 03:29 PM
 -- Server version: 5.5.46-0ubuntu0.14.04.2
 -- PHP Version: 5.5.9-1ubuntu4.14
 
@@ -91,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `companies` (
   `created_dt` datetime NOT NULL,
   `status` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
 
 --
 -- Dumping data for table `companies`
@@ -101,7 +101,10 @@ INSERT INTO `companies` (`id`, `company_name`, `company_address`, `company_email
 (2, 'Cygnet- infotech', 'Novrangpura Ahmedabad', 'sunil@cygnet-infotech.com', '2015-12-23 12:42:56', 1),
 (3, 'DRC Systems', 'Ahmedabad', 'test@drcsystems.com', '2015-12-24 09:02:42', 1),
 (4, 'test', 'test', 'test@drcsystems.comss', '2015-12-25 13:13:18', 1),
-(5, 'DRC Systems1', 'Ahmedabad', 'test@drcsystems.com', '2015-12-25 13:24:10', 1);
+(5, 'DRC Systems1', 'Ahmedabad', 'test@drcsystems.com', '2015-12-25 13:24:10', 1),
+(6, 'Cygnet infotech', 'Ahmedabad', 'test@drcsystems.com', '2016-02-12 13:27:58', 1),
+(7, 'DRC Systems236', 'Ahmedabad', 'test@drcsystefms.comss', '2016-02-12 13:36:27', 1),
+(8, 'suniltest', 'Ahmedabad', 'tessst@drcsystefms.comss', '2016-02-12 13:37:18', 1);
 
 -- --------------------------------------------------------
 
@@ -446,6 +449,8 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password_reset_token` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `user_type_id` int(11) NOT NULL,
+  `access_token` text COLLATE utf8_unicode_ci,
+  `image` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `status` smallint(6) NOT NULL DEFAULT '10',
   `created_at` int(11) NOT NULL,
   `updated_at` int(11) NOT NULL,
@@ -454,19 +459,28 @@ CREATE TABLE IF NOT EXISTS `user` (
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `password_reset_token` (`password_reset_token`),
   KEY `user_type_id` (`user_type_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=8 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
 
 --
 -- Dumping data for table `user`
 --
 
-INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `user_type_id`, `status`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'User', 'skumar', 'jqHUUxXatwzRaYClXgPsn4Z0MC_uzn_w', '$2y$13$TGnn.srE8pJOlGQiA48cEObaP/JfbSa/EexA/QCBwYbwKjhE5V5Iy', NULL, 'skumar@cygnet-infotech.com', 1, 1, 1450867114, 1452084828),
-(2, 'Sunil', 'Kumar', 'sunil120', 'aPTZsMP6FOtedxqYc7j2UBF4-lnVHmCt', '$2y$13$2TeS7gaPU6Ynui9KlOR.0eVA0JoceDHH7lJgS5y1j0EmFn4RKfH06', NULL, 'sunil.kumar@cygnet-infotech.com', 2, 1, 1450871307, 1452089486),
-(3, 'Manish', 'Jangir', 'manish', '', '$2y$13$UmoKt6WH67G6mjX56fWdCuKAdSoRQXzW5EH8y5LLWJRJQ/B4whSIm', NULL, 'manish@gmail.com', 1, 1, 1451907630, 1451911865),
-(5, 'tset', 'test', 'skumar1', 'nc2AvQy6x17nbOLF2IcNGzFGOHvF4Rjk', '$2y$13$I9i/afjpsUMGCoWNGo8QjOTe5hBkpYj4JWdocCi7O.QNHUFRNqnLm', NULL, 'root@test.com', 1, 1, 1451912936, 1451916781),
-(6, 'Manish2', 'Jangir', 'manish2', '3fY7KLy2V9s_9d8zDnMUsKS5QlOlzCcP', '$2y$13$r/XH6melAxlhqkv4yfOQre3S78GvCQOyua/flccooHjmSnopGVPdG', NULL, 'manish@gmail.com1', 1, 1, 1451914043, 1451914043),
-(7, 'Test', 'User', 'testuser', '-Vby3b3TcAmqX8BpXl1r6ICbYP4gXpYb', '$2y$13$GBWbmaDiwjDgk03DYLG4te5NCGkXXZUkEv9v7zZesXOi4jGc23IV2', NULL, 'test@test.com', 1, 1, 1451973459, 1451973459);
+INSERT INTO `user` (`id`, `first_name`, `last_name`, `username`, `auth_key`, `password_hash`, `password_reset_token`, `email`, `user_type_id`, `access_token`, `image`, `status`, `created_at`, `updated_at`) VALUES
+(1, 'Admin', 'User', 'skumar', 'jqHUUxXatwzRaYClXgPsn4Z0MC_uzn_w', '$2y$13$TGnn.srE8pJOlGQiA48cEObaP/JfbSa/EexA/QCBwYbwKjhE5V5Iy', NULL, 'skumar@cygnet-infotech.com', 1, 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.e30.ZQxdsOIyz1n2y-cdgj4Ul79O4w1Bjrf631lbUxjDvEI', NULL, 1, 1450867114, 1455284267),
+(5, 'tset', 'test', 'skumar1', 'nc2AvQy6x17nbOLF2IcNGzFGOHvF4Rjk', '$2y$13$I9i/afjpsUMGCoWNGo8QjOTe5hBkpYj4JWdocCi7O.QNHUFRNqnLm', NULL, 'root@test.com', 1, NULL, NULL, 1, 1451912936, 1451916781),
+(6, 'Manish2', 'Jangir', 'manish2', '3fY7KLy2V9s_9d8zDnMUsKS5QlOlzCcP', '$2y$13$r/XH6melAxlhqkv4yfOQre3S78GvCQOyua/flccooHjmSnopGVPdG', NULL, 'manish@gmail.com1', 1, NULL, NULL, 1, 1451914043, 1451914043),
+(7, 'Test', 'User', 'testuser', '-Vby3b3TcAmqX8BpXl1r6ICbYP4gXpYb', '$2y$13$GBWbmaDiwjDgk03DYLG4te5NCGkXXZUkEv9v7zZesXOi4jGc23IV2', NULL, 'test@test.com', 1, NULL, NULL, 1, 1451973459, 1452683550),
+(9, 'testusr', 'tstusre2', 'testuser2', '_8ZToW0rxIMFc1xbWAVWrdoMT-eHrVUZ', '', NULL, 'tset123@tests.com', 1, NULL, NULL, 1, 1452842118, 1452842118),
+(10, 'testusr', 'tstusre2', 'testuser22', 'Cvemy5s5t_tJh5T4qtQ-pPthGhRjI2aK', '', NULL, 'tset1223@tests.com', 1, NULL, NULL, 1, 1452842843, 1452842843),
+(11, 'testusr', 'tstusre2', 'testuser2223hh', 'qCX8ZWoe4GChzD4jkBPoQiyjQ8W1uctR', '', NULL, 'tset122hhff3@tests.com', 1, NULL, NULL, 1, 1452857167, 1452857167),
+(12, 'testusr', 'tstusre2', 'testuser22hh23hh', 'AJ5H7X1eldNGlgWBcyBkiHxuHVkG2ums', '', NULL, 'tset122hhhhff3@tests.com', 1, NULL, NULL, 1, 1452857185, 1452857185),
+(13, 'testusr', 'tstusre2', 'testuser22shh23hh', 'RJykRrYAwP6-P9JM-5drwfpODBKBWLkI', '', NULL, 'tset122hshhhff3@tests.com', 1, NULL, NULL, 1, 1452858477, 1452858477),
+(14, 'testusr', 'tstusre2', 'testuser22shhd23hh', 'DOtDCQrr1U6lD-0wz00RxJ-yF8X-LUUs', '', NULL, 'tset122hshhhffd3@tests.com', 1, NULL, NULL, 1, 1452858482, 1452858482),
+(15, 'testusr', 'tstusre2', 'testuser22sdhhd23hh', 'T55yyIipDC3YWLERsuwAWAgd-1Pi3Ajf', '', NULL, 'tset122hshhdhffd3@tests.com', 1, NULL, NULL, 1, 1452858524, 1452858524),
+(16, 'testusr', 'tstusre2', 'sdftestuser22sdhhd23hh', 'GusJlIkz-SQY2MsxVJALMJc8nnQejYp-', '', NULL, 'tset122hshhdhsdffd3@tests.com', 1, NULL, 'avatar5.png', 1, 1452858607, 1452858607),
+(18, 'testusrsdfds', 'tstusre2sd12', 'sdftestuser22sdhhd23hhssss', '8pzYPqbV28EyhqGUDT-5fnyBAY1f-bEg', '', NULL, 'tset122hshsshdhsdffd3@tests.coms', 1, NULL, NULL, 1, 1453098450, 1453098450),
+(19, 'testusrsdfds', 'tstusre2sd12', 'sdfteddstussser22ccsdhhd23hhssss', 'HyQeI-9Uk4cnIcvyb4OnmlYeeRxDHwbR', '$2y$13$aiU.lHOI99rL5E5muDxln.70CUYRqzaz1Xl0x7OcMEN1319LqSjvm', NULL, 'tset122dssdhshsshcdhsdffd3@tests.coms', 2, NULL, 'boxed-bg.jpg', 1, 1453098550, 1453110135),
+(20, 'testusrsdfds', 'tstusre2sd12', 'sdfteddstuser22ccsdhhd23hhssss', 'nHXdtWG2kx18sCRKY4lcuMUfCD-d3F2T', '$2y$13$KWuHCkS/A7tFLf86KEtyz.kKGEDZVqjx.XoBi23IqozqPTOWpEji2', NULL, 'tset122ddhshsshcdhsdffd3@tests.coms', 2, NULL, 'avatar04.png', 1, 1453098720, 1453110128);
 
 -- --------------------------------------------------------
 
