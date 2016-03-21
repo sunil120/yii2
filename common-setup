@@ -1,0 +1,108 @@
+++ Install Yii2 Advance in LAMP and make desired setting to run frontend and backend URL along with login feature
+
+	website : http://www.yiiframework.com/download/
+
+	Download Yii2 advance from this link: Yii 2 with advanced application template and unzip it and copy advance to html folder
+
+	Open Command Prompt C+Shift+T
+
+	Go to project directory cd /var/www/html/advance
+
+	Run "php init" command and follow steps
+
+	Run below links in browser
+	http://localhost/advanced/frontend/web/index.php
+	http://localhost/advanced/backend/web/index.php
+
+	---------For database connection--------------
+	Create database in http://localhost/phpmyadmin/
+
+	Go to /var/www/html/advanced/common/config/main-local.php file and add newly created database detail as per your project as my project name is "advance"
+
+	Go to /var/www/html/advanced/README.md file and check next steps to create desired table for user login according to this setup.
+	OR
+	Open Command Prompt  and run "php yii migrate" command and follow all steps
+
+++ How to remove /frontend/web from url to access front-end directly.
+	Put index.php from /var/www/html/advanced/frontend/web to /var/www/html/advanced
+	Put asset folder from /var/www/html/advanced/frontend/web to /var/www/html/advanced
+	Note :- The advance is my project name here
+	make changes in requried file path in index.php
+	Note:- Make asset folder writable if required 
+	Exp :-  sudo chmod -R 777  /var/www/html/advanced/assets 
+
+	Run http://localhost/advanced
+
+
+++ How to remove /web from url to access backend directly.
+	Put index.php from /var/www/html/advanced/backend/web to /var/www/html/advanced/backend
+	Put asset folder from /var/www/html/advanced/backend/web to /var/www/html/advanced/backend
+	make changes in requried file path in index.php
+	Note:- Make asset folder writable if required 
+	Exp :-  sudo chmod -R 777  /var/www/html/advanced/backend/assets 
+	Run http://localhost/advanced/backend
+
+
+++ Remove index.php from url 
+	Make mod_rewrite on if required
+	Enable mod_rewrite on Ubuntu :-
+
+	1. To enable mod_rewrite on ubuntu execute below command by terminal
+
+	sudo a2enmod rewrite
+
+	You need to restart the webserver to apply the changes:
+
+	sudo service apache2 restart
+
+	2. Now go to “etc/apache2/apache2.conf” open it your favorite editor and change AllowOverride none to AllowOverride All save your changes and you need to restart Apache again by above command.
+
+	<Directory /var/www/>
+	Options Indexes FollowSymLinks
+	AllowOverride All
+	Require all granted
+	</Directory>
+
+	Now go to “config/web.php” add below code to “components” section
+
+	 'urlManager' => [
+	    'class' => 'yii\web\UrlManager',
+	    'showScriptName' => false,
+	    'enablePrettyUrl' => true,
+	    'rules' => array(
+	          '<controller:\w+>/<id:\d+>' => '<controller>/view',
+	          '<controller:\w+>/<action:\w+>/<id:\d+>' => '<controller>/<action>',
+	          '<controller:\w+>/<action:\w+>' => '<controller>/<action>',
+	    ),
+	 ],
+
+	 Now add .htaccess file to your root directory where you have put index.php with below code
+	 RewriteEngine on
+	 RewriteCond %{REQUEST_FILENAME} !-f
+	 RewriteCond %{REQUEST_FILENAME} !-d
+	 RewriteRule . index.php
+
+	 Now you are done with all configuration.
+	 You can apply this setting for backend URLs also.
+
+ ++ How to make separate session for frontend and backend login
+	1. For backend section
+	 Open  /var/www/html/advanced/backend/config/main.php and put below code inside component block
+	'session' => [
+	    'name' => '_backendSessionId', // unique for backend
+	    'savePath' => __DIR__ . '/../runtime', // a temporary folder on backend
+	]
+
+	2. For frontend section
+	 Open  /var/www/html/advanced/frontend/config/main.php and put below code inside component block
+	'session' => [
+	    'name' => '_frontendSessionId', // unique for backend
+	    'savePath' => __DIR__ . '/../runtime', // a temporary folder on backend
+	]
+
+
+
+
+
+
+
